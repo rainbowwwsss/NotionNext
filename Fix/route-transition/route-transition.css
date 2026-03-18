@@ -30,6 +30,18 @@ html.light #__next {
   opacity: 1;
 }
 
+html.dark #route-transition-shield,
+html.dark #loading-cover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.light #route-transition-shield,
+html.light #loading-cover {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+}
+
 #loading-cover {
   background-color: var(--fix-route-bg, #ffffff) !important;
   color: var(--fix-route-current-text, var(--fix-route-text, #111111)) !important;

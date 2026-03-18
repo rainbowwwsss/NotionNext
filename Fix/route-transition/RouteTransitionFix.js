@@ -10,6 +10,20 @@ function getCurrentPalette() {
   }
 
   const root = document.documentElement
+  if (root.classList.contains('dark')) {
+    return {
+      backgroundColor: '#000000',
+      textColor: '#ffffff'
+    }
+  }
+
+  if (root.classList.contains('light')) {
+    return {
+      backgroundColor: '#ffffff',
+      textColor: '#111111'
+    }
+  }
+
   const nextRoot = document.getElementById('__next')
   const candidates = [document.body, nextRoot, root]
   const backgroundColor =
@@ -17,11 +31,11 @@ function getCurrentPalette() {
       .map(node => node && window.getComputedStyle(node).backgroundColor)
       .find(
         color => color && color !== 'transparent' && color !== 'rgba(0, 0, 0, 0)'
-      ) || (root.classList.contains('dark') ? '#000000' : '#ffffff')
+      ) || '#ffffff'
 
   return {
     backgroundColor,
-    textColor: root.classList.contains('dark') ? '#ffffff' : '#111111'
+    textColor: '#111111'
   }
 }
 

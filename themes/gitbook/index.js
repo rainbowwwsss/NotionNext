@@ -32,7 +32,11 @@ import Footer from './components/Footer'
 import Header from './components/Header'
 import InfoCard from './components/InfoCard'
 import JumpToTopButton from './components/JumpToTopButton'
-import NavPostList from './components/NavPostList'
+import NavPostList, {
+  getExpandedGroupKeysOnRouteChange,
+  getPathFromRoute,
+  groupArticles
+} from './components/NavPostList'
 import PageNavDrawer from './components/PageNavDrawer'
 import RevolverMaps from './components/RevolverMaps'
 import TagItemMini from './components/TagItemMini'
@@ -107,9 +111,28 @@ const LayoutBase = props => {
   } = props
   const { fullWidth } = useGlobal()
   const router = useRouter()
+  const GITBOOK_EXCLUSIVE_COLLAPSE = siteConfig(
+    'GITBOOK_EXCLUSIVE_COLLAPSE',
+    null,
+    CONFIG
+  )
+  const GITBOOK_SIDEBAR_KEEP_STATE_ON_ROUTE = siteConfig(
+    'GITBOOK_SIDEBAR_KEEP_STATE_ON_ROUTE',
+    true,
+    CONFIG
+  )
   const [tocVisible, changeTocVisible] = useState(false)
   const [pageNavVisible, changePageNavVisible] = useState(false)
   const [filteredNavPages, setFilteredNavPages] = useState(allNavPages)
+  const [sidebarExpandedGroupKeys, setSidebarExpandedGroupKeys] = useState(() =>
+    getExpandedGroupKeysOnRouteChange({
+      categoryFolders: groupArticles(allNavPages),
+      path: getPathFromRoute(router.asPath),
+      expandedGroupKeys: [],
+      exclusiveCollapse: GITBOOK_EXCLUSIVE_COLLAPSE,
+      keepStateOnRoute: GITBOOK_SIDEBAR_KEEP_STATE_ON_ROUTE
+    })
+  )
 
   const searchModal = useRef(null)
 
@@ -117,11 +140,7 @@ const LayoutBase = props => {
     setFilteredNavPages(getNavPagesWithLatest(allNavPages, latestPosts, post))
   }, [router])
 
-  const GITBOOK_LOADING_COVER = siteConfig(
-    'GITBOOK_LOADING_COVER',
-    true,
-    CONFIG
-  )
+  const GITBOOK_LOADING_COVER = siteConfig('GITBOOK_LOADING_COVER', true, CONFIG)
   return (
     <ThemeGlobalGitbook.Provider
       value={{
@@ -132,7 +151,9 @@ const LayoutBase = props => {
         setFilteredNavPages,
         allNavPages,
         pageNavVisible,
-        changePageNavVisible
+        changePageNavVisible,
+        sidebarExpandedGroupKeys,
+        setSidebarExpandedGroupKeys
       }}>
       <Style />
 

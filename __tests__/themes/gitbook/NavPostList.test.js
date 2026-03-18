@@ -1,7 +1,15 @@
+jest.mock('@/themes/gitbook', () => ({
+  useGitBookGlobal: jest.fn(() => ({
+    sidebarExpandedGroupKeys: [],
+    setSidebarExpandedGroupKeys: jest.fn()
+  }))
+}))
+
 import {
-  getDefaultOpenIndexByPath,
-  getExpandedGroupsOnRouteChange,
-  getInitialExpandedGroups
+  getExpandedGroupKeysOnRouteChange,
+  getGroupKey,
+  getGroupKeyByPath,
+  normalizeExpandedGroupKeys
 } from '@/themes/gitbook/components/NavPostList'
 
 describe('GitBook NavPostList route state', () => {
@@ -16,65 +24,75 @@ describe('GitBook NavPostList route state', () => {
     }
   ]
 
-  test('opens the current group on first render when keep-state is enabled', () => {
+  test('uses stable group keys instead of array indexes', () => {
+    expect(getGroupKey(categoryFolders[0], 0)).toBe('category:Guides::/guide/a')
+    expect(getGroupKeyByPath(categoryFolders, '/note/b')).toBe(
+      'category:Notes::/note/a'
+    )
+  })
+
+  test('keeps the same expanded group when routing inside the same group', () => {
+    const guidesKey = getGroupKey(categoryFolders[0], 0)
+
     expect(
-      getInitialExpandedGroups({
+      getExpandedGroupKeysOnRouteChange({
         categoryFolders,
         path: '/guide/b',
+        expandedGroupKeys: [guidesKey],
         exclusiveCollapse: true,
         keepStateOnRoute: true
       })
-    ).toEqual([0])
+    ).toEqual([guidesKey])
   })
 
-  test('keeps the expanded group unchanged when routing inside the same group', () => {
-    expect(
-      getExpandedGroupsOnRouteChange({
-        categoryFolders,
-        path: '/guide/b',
-        expandedGroups: [0],
-        exclusiveCollapse: true,
-        keepStateOnRoute: true
-      })
-    ).toEqual([0])
-  })
+  test('switches directly to the target group when routing across groups in exclusive mode', () => {
+    const guidesKey = getGroupKey(categoryFolders[0], 0)
+    const notesKey = getGroupKey(categoryFolders[1], 1)
 
-  test('switches to the target group when routing across groups in exclusive mode', () => {
     expect(
-      getExpandedGroupsOnRouteChange({
+      getExpandedGroupKeysOnRouteChange({
         categoryFolders,
         path: '/note/a',
-        expandedGroups: [0],
+        expandedGroupKeys: [guidesKey],
         exclusiveCollapse: true,
         keepStateOnRoute: true
       })
-    ).toEqual([1])
+    ).toEqual([notesKey])
   })
 
   test('adds the target group without closing others when exclusive mode is disabled', () => {
+    const guidesKey = getGroupKey(categoryFolders[0], 0)
+    const notesKey = getGroupKey(categoryFolders[1], 1)
+
     expect(
-      getExpandedGroupsOnRouteChange({
+      getExpandedGroupKeysOnRouteChange({
         categoryFolders,
         path: '/note/a',
-        expandedGroups: [0],
+        expandedGroupKeys: [guidesKey],
         exclusiveCollapse: false,
         keepStateOnRoute: true
       })
-    ).toEqual([0, 1])
+    ).toEqual([guidesKey, notesKey])
   })
 
   test('falls back to the first group when the route does not match any post', () => {
-    expect(getDefaultOpenIndexByPath(categoryFolders, '/missing')).toBe(0)
+    expect(
+      getExpandedGroupKeysOnRouteChange({
+        categoryFolders,
+        path: '/missing',
+        expandedGroupKeys: [],
+        exclusiveCollapse: true,
+        keepStateOnRoute: true
+      })
+    ).toEqual([getGroupKey(categoryFolders[0], 0)])
   })
 
-  test('starts collapsed when keep-state is disabled so legacy timing can take over', () => {
+  test('drops stale expanded keys when the visible groups change', () => {
     expect(
-      getInitialExpandedGroups({
-        categoryFolders,
-        path: '/guide/a',
-        exclusiveCollapse: true,
-        keepStateOnRoute: false
-      })
-    ).toEqual([])
+      normalizeExpandedGroupKeys(
+        ['category:Guides::/guide/a', 'category:Unknown::/other'],
+        categoryFolders
+      )
+    ).toEqual(['category:Guides::/guide/a'])
   })
 })

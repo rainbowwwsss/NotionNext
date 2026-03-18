@@ -15,6 +15,7 @@ const CONFIG = {
   // Sidebar navigation
   GITBOOK_EXCLUSIVE_COLLAPSE: true, // Only keep one category expanded at a time.
   GITBOOK_SIDEBAR_KEEP_STATE_ON_ROUTE: true, // Keep the current expanded category state during route changes.
+  GITBOOK_SIDEBAR_ANIMATE_COLLAPSE: false, // Disable sidebar collapse animation by default for seamless route changes.
   GITBOOK_FOLDER_HOVER_EXPAND: false, // Expand category on hover instead of click.
 
   // Widget

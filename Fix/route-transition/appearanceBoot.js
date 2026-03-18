@@ -6,9 +6,16 @@ html {
   color-scheme: light;
 }
 
-html.dark {
+html.dark,
+html[data-appearance-mode='dark'] {
   background-color: #000000;
   color-scheme: dark;
+}
+
+html.light,
+html[data-appearance-mode='light'] {
+  background-color: #ffffff;
+  color-scheme: light;
 }
 
 body,
@@ -41,10 +48,13 @@ export const routeTransitionBootScript = `
   var backgroundColor = shouldBeDark ? '#000000' : '#ffffff';
   var textColor = shouldBeDark ? '#ffffff' : '#111111';
   var root = document.documentElement;
+  var appearanceMode = shouldBeDark ? 'dark' : 'light';
 
-  root.classList.add(shouldBeDark ? 'dark' : 'light');
+  root.classList.remove('dark', 'light');
+  root.classList.add(appearanceMode);
+  root.setAttribute('data-appearance-mode', appearanceMode);
   root.style.backgroundColor = backgroundColor;
-  root.style.colorScheme = shouldBeDark ? 'dark' : 'light';
+  root.style.colorScheme = appearanceMode;
   root.style.setProperty('--fix-route-bg', backgroundColor);
   root.style.setProperty('--fix-route-text', textColor);
   root.style.setProperty('--fix-route-current-bg', backgroundColor);

@@ -7,13 +7,19 @@ body,
 
 html.dark,
 html.dark body,
-html.dark #__next {
+html.dark #__next,
+html[data-appearance-mode='dark'],
+html[data-appearance-mode='dark'] body,
+html[data-appearance-mode='dark'] #__next {
   background-color: var(--fix-route-bg, #000000);
 }
 
 html.light,
 html.light body,
-html.light #__next {
+html.light #__next,
+html[data-appearance-mode='light'],
+html[data-appearance-mode='light'] body,
+html[data-appearance-mode='light'] #__next {
   background-color: var(--fix-route-bg, #ffffff);
 }
 
@@ -31,13 +37,17 @@ html.light #__next {
 }
 
 html.dark #route-transition-shield,
-html.dark #loading-cover {
+html.dark #loading-cover,
+html[data-appearance-mode='dark'] #route-transition-shield,
+html[data-appearance-mode='dark'] #loading-cover {
   background-color: #000000 !important;
   color: #ffffff !important;
 }
 
 html.light #route-transition-shield,
-html.light #loading-cover {
+html.light #loading-cover,
+html[data-appearance-mode='light'] #route-transition-shield,
+html[data-appearance-mode='light'] #loading-cover {
   background-color: #ffffff !important;
   color: #111111 !important;
 }

@@ -1,3 +1,4 @@
+import { applyDarkModeState } from '@/Fix/appearance-sync/rootAppearance'
 import { useGlobal } from '@/lib/global'
 import { saveDarkModeToLocalStorage } from '@/themes/theme'
 import CONFIG from '../config'
@@ -15,9 +16,7 @@ export default function FloatDarkModeButton () {
     const newStatus = !isDarkMode
     saveDarkModeToLocalStorage(newStatus)
     updateDarkMode(newStatus)
-    const htmlElement = document.getElementsByTagName('html')[0]
-    htmlElement.classList?.remove(newStatus ? 'light' : 'dark')
-    htmlElement.classList?.add(newStatus ? 'dark' : 'light')
+    applyDarkModeState(newStatus)
   }
 
   return (

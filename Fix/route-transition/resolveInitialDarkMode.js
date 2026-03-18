@@ -1,17 +1,18 @@
+import {
+  DARK_APPEARANCE_MODE,
+  getRootAppearanceMode
+} from '@/Fix/appearance-sync/rootAppearance'
+
 export default function resolveInitialDarkMode(defaultDarkMode) {
+  const fallbackMode =
+    defaultDarkMode === DARK_APPEARANCE_MODE || defaultDarkMode === 'true'
+      ? DARK_APPEARANCE_MODE
+      : null
+
   if (typeof document === 'undefined') {
-    return defaultDarkMode === 'dark'
+    return fallbackMode === DARK_APPEARANCE_MODE
   }
 
-  const root = document.documentElement
-
-  if (root.classList.contains('dark')) {
-    return true
-  }
-
-  if (root.classList.contains('light')) {
-    return false
-  }
-
-  return defaultDarkMode === 'dark'
+  const rootMode = getRootAppearanceMode(document.documentElement, fallbackMode)
+  return rootMode === DARK_APPEARANCE_MODE
 }

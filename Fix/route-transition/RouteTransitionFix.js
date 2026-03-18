@@ -1,3 +1,9 @@
+import {
+  DARK_APPEARANCE_MODE,
+  LIGHT_APPEARANCE_MODE,
+  getAppearancePalette,
+  getRootAppearanceMode
+} from '@/Fix/appearance-sync/rootAppearance'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -10,18 +16,12 @@ function getCurrentPalette() {
   }
 
   const root = document.documentElement
-  if (root.classList.contains('dark')) {
-    return {
-      backgroundColor: '#000000',
-      textColor: '#ffffff'
-    }
-  }
-
-  if (root.classList.contains('light')) {
-    return {
-      backgroundColor: '#ffffff',
-      textColor: '#111111'
-    }
+  const appearanceMode = getRootAppearanceMode(root, null)
+  if (
+    appearanceMode === DARK_APPEARANCE_MODE ||
+    appearanceMode === LIGHT_APPEARANCE_MODE
+  ) {
+    return getAppearancePalette(appearanceMode)
   }
 
   const nextRoot = document.getElementById('__next')
@@ -99,7 +99,7 @@ export default function RouteTransitionFix() {
 
     observer.observe(root, {
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['class', 'data-appearance-mode']
     })
 
     applyCurrentPalette()

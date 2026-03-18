@@ -1,4 +1,9 @@
 import BLOG, { LAYOUT_MAPPINGS } from '@/blog.config'
+import {
+  DARK_APPEARANCE_MODE,
+  LIGHT_APPEARANCE_MODE,
+  applyAppearanceMode
+} from '@/Fix/appearance-sync/rootAppearance'
 import * as ThemeComponents from '@theme-components'
 import getConfig from 'next/config'
 import dynamic from 'next/dynamic'
@@ -178,9 +183,11 @@ export const initDarkMode = (updateDarkMode, defaultDarkMode) => {
   }
 
   updateDarkMode(newDarkMode)
-  document
-    .getElementsByTagName('html')[0]
-    .setAttribute('class', newDarkMode ? 'dark' : 'light')
+  if (typeof document !== 'undefined') {
+    applyAppearanceMode(
+      newDarkMode ? DARK_APPEARANCE_MODE : LIGHT_APPEARANCE_MODE
+    )
+  }
 }
 
 /**

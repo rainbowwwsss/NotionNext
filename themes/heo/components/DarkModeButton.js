@@ -1,3 +1,4 @@
+import { applyDarkModeState } from '@/Fix/appearance-sync/rootAppearance'
 import { useGlobal } from '@/lib/global'
 import { saveDarkModeToLocalStorage } from '@/themes/theme'
 import { Moon, Sun } from '@/components/HeroIcons'
@@ -26,9 +27,7 @@ const DarkModeButton = (props) => {
     const newStatus = !isDarkMode
     saveDarkModeToLocalStorage(newStatus)
     updateDarkMode(newStatus)
-    const htmlElement = document.getElementsByTagName('html')[0]
-    htmlElement.classList?.remove(newStatus ? 'light' : 'dark')
-    htmlElement.classList?.add(newStatus ? 'dark' : 'light')
+    applyDarkModeState(newStatus)
   }
 
   return <div onClick={handleChangeDarkMode} className={`${className || ''} cursor-pointer hover: scale-100 hover:bg-black hover:bg-opacity-10 rounded-full w-10 h-10 flex justify-center items-center duration-200 transition-all`}>

@@ -1,3 +1,4 @@
+import { applyDarkModeState } from '@/Fix/appearance-sync/rootAppearance'
 import { useGlobal } from '@/lib/global'
 import { saveDarkModeToLocalStorage } from '@/themes/theme'
 
@@ -8,9 +9,7 @@ const DarkModeButton = () => {
     const newStatus = !isDarkMode
     saveDarkModeToLocalStorage(newStatus)
     updateDarkMode(newStatus)
-    const htmlElement = document.getElementsByTagName('html')[0]
-    htmlElement.classList?.remove(newStatus ? 'light' : 'dark')
-    htmlElement.classList?.add(newStatus ? 'dark' : 'light')
+    applyDarkModeState(newStatus)
   }
 
   return <div className='z-10 duration-200 text-xs cursor-pointer py-1.5 px-1'>

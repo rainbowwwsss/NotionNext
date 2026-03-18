@@ -1,25 +1,26 @@
 const CONFIG = {
-  GITBOOK_INDEX_PAGE: 'about', // 文档首页显示的文章，请确此路径包含在您的notion数据库中
+  GITBOOK_INDEX_PAGE: 'about', // Doc homepage slug.
 
-  GITBOOK_AUTO_SORT: process.env.NEXT_PUBLIC_GITBOOK_AUTO_SORT || true, // 是否自动按分类名 归组排序文章；自动归组可能会打乱您Notion中的文章顺序
+  GITBOOK_AUTO_SORT: process.env.NEXT_PUBLIC_GITBOOK_AUTO_SORT || true, // Auto-group posts by category name.
 
   GITBOOK_LATEST_POST_RED_BADGE:
-    process.env.NEXT_PUBLIC_GITBOOK_LATEST_POST_RED_BADGE || true, // 是否给最新文章显示红点
+    process.env.NEXT_PUBLIC_GITBOOK_LATEST_POST_RED_BADGE || true, // Show a badge for latest posts.
 
-  // 菜单
-  GITBOOK_MENU_CATEGORY: true, // 显示分类
-  GITBOOK_BOOK_MENU_TAG: true, // 显示标签
-  GITBOOK_MENU_ARCHIVE: true, // 显示归档
-  GITBOOK_MENU_SEARCH: true, // 显示搜索
+  // Menu
+  GITBOOK_MENU_CATEGORY: true,
+  GITBOOK_BOOK_MENU_TAG: true,
+  GITBOOK_MENU_ARCHIVE: true,
+  GITBOOK_MENU_SEARCH: true,
 
-  // 导航文章自动排他折叠
-  GITBOOK_EXCLUSIVE_COLLAPSE: true, // 一次只展开一个分类，其它文件夹自动关闭。
-
-  GITBOOK_FOLDER_HOVER_EXPAND: false, // 左侧导航文件夹鼠标悬停时自动展开；若为false，则要点击才能展开
+  // Sidebar navigation
+  GITBOOK_EXCLUSIVE_COLLAPSE: true, // Only keep one category expanded at a time.
+  GITBOOK_SIDEBAR_KEEP_STATE_ON_ROUTE: true, // Keep the current expanded category state during route changes.
+  GITBOOK_FOLDER_HOVER_EXPAND: false, // Expand category on hover instead of click.
 
   // Widget
   GITBOOK_WIDGET_REVOLVER_MAPS:
-    process.env.NEXT_PUBLIC_WIDGET_REVOLVER_MAPS || 'false', // 地图插件
-  GITBOOK_WIDGET_TO_TOP: true // 跳回顶部
+    process.env.NEXT_PUBLIC_WIDGET_REVOLVER_MAPS || 'false',
+  GITBOOK_WIDGET_TO_TOP: true
 }
+
 export default CONFIG

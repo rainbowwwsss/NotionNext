@@ -1,4 +1,5 @@
 // import '@/styles/animate.css' // @see https://animate.style/
+import '@/Fix/route-transition/route-transition.css'
 import '@/styles/globals.css'
 import '@/styles/utility-patterns.css'
 
@@ -16,6 +17,7 @@ import { getQueryParam } from '../lib/utils'
 // 各种扩展插件 这个要阻塞引入
 import BLOG from '@/blog.config'
 import ExternalPlugins from '@/components/ExternalPlugins'
+import RouteTransitionFix from '@/Fix/route-transition/RouteTransitionFix'
 import SEO from '@/components/SEO'
 import { zhCN } from '@clerk/localizations'
 import dynamic from 'next/dynamic'
@@ -54,6 +56,7 @@ const MyApp = ({ Component, pageProps }) => {
   const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   const content = (
     <GlobalContextProvider {...pageProps}>
+      <RouteTransitionFix />
       <GLayout {...pageProps}>
         <SEO {...pageProps} />
         <Component {...pageProps} />

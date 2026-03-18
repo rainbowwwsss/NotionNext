@@ -1,0 +1,36 @@
+html,
+body,
+#__next {
+  min-height: 100%;
+  background-color: var(--fix-route-bg, #ffffff);
+}
+
+html.dark,
+html.dark body,
+html.dark #__next {
+  background-color: var(--fix-route-bg, #000000);
+}
+
+html.light,
+html.light body,
+html.light #__next {
+  background-color: var(--fix-route-bg, #ffffff);
+}
+
+#route-transition-shield {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  background-color: var(--fix-route-current-bg, var(--fix-route-bg, #ffffff));
+}
+
+#route-transition-shield[data-visible='true'] {
+  opacity: 1;
+}
+
+#loading-cover {
+  background-color: var(--fix-route-bg, #ffffff) !important;
+  color: var(--fix-route-current-text, var(--fix-route-text, #111111)) !important;
+}
